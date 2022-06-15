@@ -1,0 +1,7 @@
+Category 1
+- "Example 1" :: https://example.com
+- "Google" :: https://google.com
+
+Category 2
+- "Amazon" :: https://amazon.com
+- "Example 2" :: https://example.com

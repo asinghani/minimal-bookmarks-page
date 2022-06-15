@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="res/bootstrap.min.css">
+
+        <title>Dashboard</title>
+
+        <style>
+            .row {
+                padding-bottom: 20pt;
+            }
+
+            body {
+                font-size: 15pt;
+            }
+
+            .card-header {
+                font-weight: bold;
+                font-size: 15pt;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            a li {
+                color: #2a9fd6 !important;
+            }
+
+            .card-header {
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container" style="padding-top: 30pt;">
+            <div class="row">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" placeholder="Search..."
+                           style="background-color: black; color: white;" id="searchbar" />
+                </div>
+            </div>
+            <div class="row" data-masonry='{"percentPosition": true }'>
+                <!-- Start Cards -->
+
+__CONTENT__
+
+                <!-- End Cards -->
+            </div>
+        </div>
+
+        <script src="res/bootstrap.min.js"></script>
+        <script src="res/masonry.pkgd.min.js" async></script>
+
+        <script>
+            var HOME_DIR = window.location.hash.substr(1);
+            var searchbar = document.getElementById("searchbar");
+
+            function setup() {
+                searchbar.focus();
+                searchbar.addEventListener("keyup", function(event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                        var query = searchbar.value.trim();
+                        if (query.length > 0) search(searchbar.value);
+                    }
+                });
+            }
+
+            function search(query) {
+                if (query.startsWith("http://") ||
+                    query.startsWith("https://")) {
+                    search_url(query);
+                } else if (query.indexOf(".") > -1 &&
+                           !query.startsWith(".") &&
+                           (!query.endsWith(".") || query.indexOf("/") > -1)) {
+                    search_url("http://"+query);
+                } else if (query.startsWith("/")) {
+                    search_url("file://"+query);
+                } else if (query.startsWith("~")) {
+                    search_url("file://"+query.replace("~", HOME_DIR));
+                } else {
+                    search_google(query);
+                }
+            }
+
+            function search_google(query) {
+                window.location.href = "https://www.google.com/search?q="+encodeURIComponent(query);
+            }
+
+            function search_url(query) {
+                window.location.href = query;
+            }
+
+            setup();
+        </script>
+    </body>
+</html>
